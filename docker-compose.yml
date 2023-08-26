@@ -1,0 +1,41 @@
+version: '3.5'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  redis:
+    container_name: redis
+    build:
+      context: ./redis
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+    restart: always
+
+  mysql:
+    container_name: mysql
+    build:
+      context: ./mysql
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_USER=admin              # 设置 Mysql 用户名称
+      - MYSQL_PASSWORD=123456              # 设置 Mysql 用户密码
+      - MYSQL_ROOT_PASSWORD=123456    # 设置 Mysql root 用户密码
+    privileged: true
+    volumes:
+      - ./mysql/data:/var/lib/mysql        # 引用 .env 配置中 DATA_PATH_HOST 变量，将宿主机上存放 Mysql 数据的目录挂载到容器中 /var/lib/mysql 目录
+      - ./mysql/conf:/etc/mysql/conf.d     # 引用 .env 配置中 CONF_PATH_HOST 变量，将宿主机上存放 Mysql 配置文件的目录挂载到容器中 /etc/mysql/conf.d 目录
+    ports:
+      - "3306:3306"                          # 设置容器3306端口映射指定宿主机端口
+    networks:
+      - backend
+    restart: always
