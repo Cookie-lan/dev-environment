@@ -14,12 +14,13 @@ services:
     privileged: true
     volumes:
       - ./redis/data:/data
-      - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/conf/redis.conf:/etc/redis/redis.conf
     ports:
       - 6379:6379
     networks:
       - backend
     restart: always
+    command: /bin/bash -c "redis-server /etc/redis/redis.conf --appendonly yes"
 
   mysql:
     container_name: mysql
