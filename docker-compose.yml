@@ -72,7 +72,7 @@ services:
     environment:
       - TZ=${TZ}
       - ALLOW_NONE_AUTHENTICATION=yes       #参数指不用密码可以连接
-      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-${USER}:2379
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
     ports: # 设置端口映射
       - "${ETCD_PORT}:2379"

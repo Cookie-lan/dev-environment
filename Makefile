@@ -6,4 +6,3 @@ down:
 
 ps:
 	docker-compose ps
-
