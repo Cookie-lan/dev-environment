@@ -3,35 +3,35 @@ version: '3.5'
 networks:
   backend:
     driver: ${NETWORKS_DRIVER}
-    ipam:
-      config:
-        - subnet: ${NETWORKS_SUBNET}
+#    ipam:
+#      config:
+#        - subnet: ${NETWORKS_SUBNET}
 
 services:
-  golang: # 自定义容器名称
-    build:
-      context: ./golang                  # 指定构建使用的 Dockerfile 文件
-    container_name: golang-${USER}
-    environment: # 设置环境变量
-      - TZ=${TZ}
-    privileged: true
-    volumes: # 设置挂载目录
-      - ${CODE_PATH_HOST}:/usr/src/code  # 引用 .env 配置中 CODE_PATH_HOST 变量，将宿主机上代码存放的目录挂载到容器中 /usr/src/code 目录
-    ports: # 设置端口映射
-      - "8000:8000"
-      - "8001:8001"
-      - "8002:8002"
-      - "8003:8003"
-      - "9000:9000"
-      - "9001:9001"
-      - "9002:9002"
-      - "9003:9003"
-    stdin_open: true                     # 打开标准输入，可以接受外部输入
-    tty: true
-    networks:
-      backend:
-        ipv4_address: ${GOLANG_IP}        # 指定容器静态IP
-    restart: always                      # 指定容器退出后的重启策略为始终重启
+#  golang: # 自定义容器名称
+#    build:
+#      context: ./golang                  # 指定构建使用的 Dockerfile 文件
+#    container_name: golang-${USER}
+#    environment: # 设置环境变量
+#      - TZ=${TZ}
+#    privileged: true
+#    volumes: # 设置挂载目录
+#      - ${CODE_PATH_HOST}:/usr/src/code  # 引用 .env 配置中 CODE_PATH_HOST 变量，将宿主机上代码存放的目录挂载到容器中 /usr/src/code 目录
+#    ports: # 设置端口映射
+#      - "8000:8000"
+#      - "8001:8001"
+#      - "8002:8002"
+#      - "8003:8003"
+#      - "9000:9000"
+#      - "9001:9001"
+#      - "9002:9002"
+#      - "9003:9003"
+#    stdin_open: true                     # 打开标准输入，可以接受外部输入
+#    tty: true
+#    networks:
+#      backend:
+#        ipv4_address: ${GOLANG_IP}        # 指定容器静态IP
+#    restart: always                      # 指定容器退出后的重启策略为始终重启
 
   redis:
     container_name: redis-${USER}
@@ -47,7 +47,7 @@ services:
       - ${REDIS_PORT}:6379
     networks:
       backend:
-        ipv4_address: ${REDIS_IP}        # 指定容器静态IP
+#        ipv4_address: ${REDIS_IP}        # 指定容器静态IP
     restart: always
     command: /bin/bash -c "redis-server /etc/redis/redis.conf --appendonly yes"
 
@@ -68,7 +68,7 @@ services:
       - "3306:3306"                          # 设置容器3306端口映射指定宿主机端口
     networks:
       backend:
-        ipv4_address: ${MYSQL_IP}        # 指定容器静态IP
+#        ipv4_address: ${MYSQL_IP}        # 指定容器静态IP
     restart: always
 
   etcd: # 自定义容器名称
@@ -78,7 +78,7 @@ services:
     environment:
       - TZ=${TZ}
       - ALLOW_NONE_AUTHENTICATION=yes       #参数指不用密码可以连接
-      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-${USER}:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://127.0.0.1:2379
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
     ports: # 设置端口映射
       - "${ETCD_PORT}:2379"
@@ -87,7 +87,7 @@ services:
       - ${ETCD_DATA_PATH}:/bitnami/etcd/data
     networks:
       backend:
-        ipv4_address: ${ETCD_IP}        # 指定容器静态IP
+#        ipv4_address: ${ETCD_IP}        # 指定容器静态IP
     restart: always
 
   etcd-manage:
@@ -102,7 +102,7 @@ services:
       - etcd                                          # 在 etcd 服务容器启动后启动
     networks:
       backend:
-        ipv4_address: ${ETCD_MANAGE_IP}        # 指定容器静态IP
+#        ipv4_address: ${ETCD_MANAGE_IP}        # 指定容器静态IP
     restart: always
 
   prometheus:
@@ -118,7 +118,7 @@ services:
       - "${PROMETHEUS_PORT}:9090"                     # 设置容器9090端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
       backend:
-        ipv4_address: ${PROMETHEUS_IP}        # 指定容器静态IP
+#        ipv4_address: ${PROMETHEUS_IP}        # 指定容器静态IP
     restart: always
 
   grafana:
@@ -131,7 +131,7 @@ services:
       - "${GRAFANA_PORT}:3000"                        # 设置容器3000端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
       backend:
-        ipv4_address: ${GRAFANA_IP}        # 指定容器静态IP
+#        ipv4_address: ${GRAFANA_IP}        # 指定容器静态IP
     restart: always
 
   jaeger:
@@ -144,7 +144,7 @@ services:
       - "${JAEGER_PORT}:16686"                        # 设置容器16686端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
       backend:
-        ipv4_address: ${JAEGER_IP}        # 指定容器静态IP
+#        ipv4_address: ${JAEGER_IP}        # 指定容器静态IP
     restart: always
 
   dtm:
@@ -164,5 +164,5 @@ services:
       - "${DTM_GRPC_PORT}:36790"
     networks:
       backend:
-        ipv4_address: ${DTM_IP}        # 指定容器静态IP
+#        ipv4_address: ${DTM_IP}        # 指定容器静态IP
     restart: always
