@@ -3,6 +3,9 @@ version: '3.5'
 networks:
   backend:
     driver: ${NETWORKS_DRIVER}
+    ipam:
+      config:
+        - subnet: ${NETWORKS_SUBNET}
 
 services:
   golang: # 自定义容器名称
@@ -26,7 +29,8 @@ services:
     stdin_open: true                     # 打开标准输入，可以接受外部输入
     tty: true
     networks:
-      - backend
+      backend:
+        ipv4_address: ${GOLANG_IP}        # 指定容器静态IP
     restart: always                      # 指定容器退出后的重启策略为始终重启
 
   redis:
@@ -42,7 +46,8 @@ services:
     ports:
       - ${REDIS_PORT}:6379
     networks:
-      - backend
+      backend:
+        ipv4_address: ${REDIS_IP}        # 指定容器静态IP
     restart: always
     command: /bin/bash -c "redis-server /etc/redis/redis.conf --appendonly yes"
 
@@ -62,7 +67,8 @@ services:
     ports:
       - "3306:3306"                          # 设置容器3306端口映射指定宿主机端口
     networks:
-      - backend
+      backend:
+        ipv4_address: ${MYSQL_IP}        # 指定容器静态IP
     restart: always
 
   etcd: # 自定义容器名称
@@ -80,7 +86,8 @@ services:
     volumes:
       - ${ETCD_DATA_PATH}:/bitnami/etcd/data
     networks:
-      - backend
+      backend:
+        ipv4_address: ${ETCD_IP}        # 指定容器静态IP
     restart: always
 
   etcd-manage:
@@ -94,7 +101,8 @@ services:
     depends_on: # 依赖容器
       - etcd                                          # 在 etcd 服务容器启动后启动
     networks:
-      - backend
+      backend:
+        ipv4_address: ${ETCD_MANAGE_IP}        # 指定容器静态IP
     restart: always
 
   prometheus:
@@ -109,7 +117,8 @@ services:
     ports:
       - "${PROMETHEUS_PORT}:9090"                     # 设置容器9090端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
-      - backend
+      backend:
+        ipv4_address: ${PROMETHEUS_IP}        # 指定容器静态IP
     restart: always
 
   grafana:
@@ -121,7 +130,8 @@ services:
     ports:
       - "${GRAFANA_PORT}:3000"                        # 设置容器3000端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
-      - backend
+      backend:
+        ipv4_address: ${GRAFANA_IP}        # 指定容器静态IP
     restart: always
 
   jaeger:
@@ -133,7 +143,8 @@ services:
     ports:
       - "${JAEGER_PORT}:16686"                        # 设置容器16686端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
-      - backend
+      backend:
+        ipv4_address: ${JAEGER_IP}        # 指定容器静态IP
     restart: always
 
   dtm:
@@ -152,5 +163,6 @@ services:
       - "${DTM_HTTP_PORT}:36789"
       - "${DTM_GRPC_PORT}:36790"
     networks:
-      - backend
+      backend:
+        ipv4_address: ${DTM_IP}        # 指定容器静态IP
     restart: always
