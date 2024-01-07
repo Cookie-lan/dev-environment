@@ -127,6 +127,10 @@ services:
       context: ./grafana
     environment:
       - TZ=${TZ}
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=123456
+    volumes:
+      - ./grafana/data:/var/lib/grafana
     ports:
       - "${GRAFANA_PORT}:3000"                        # 设置容器3000端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
@@ -141,7 +145,8 @@ services:
     environment:
       - TZ=${TZ}
     ports:
-      - "${JAEGER_PORT}:16686"                        # 设置容器16686端口映射指定宿主机端口，用于宿主机访问可视化web
+      - "${JAEGER_AGENT_PORT}:14268"               # 设置容器14268端口映射指定宿主机端口，用于宿主机访问 jaeger-agent
+      - "${JAEGER_PORT}:16686"                     # 设置容器16686端口映射指定宿主机端口，用于宿主机访问可视化web
     networks:
       backend:
 #        ipv4_address: ${JAEGER_IP}        # 指定容器静态IP
