@@ -1,5 +1,5 @@
 # 指定要存储trans状态的存储驱动
-# Store:
+Store:
 
 ### 默认存储驱动
 #   Driver: 'boltdb'
@@ -12,11 +12,11 @@
 #   Port: 6379
 
 ### mysql 存储驱动
-#   Driver: 'mysql'
-#   Host: 'mysql'
-#   User: 'root'
-#   Password: '123456'
-#   Port: 3306
+  Driver: 'mysql'
+  Host: 'mysql-zhoutao'
+  User: 'root'
+  Password: '123456'
+  Port: 3306
 
 ### postgres 存储驱动
 #   Driver: 'postgres'
@@ -40,7 +40,7 @@
 MicroService:
   Driver: 'dtm-driver-gozero'           # 要处理注册/发现的驱动程序的名称
   Target: 'etcd://etcd-zhoutao:2379/dtmservice' # 注册 dtm 服务的 etcd 地址
-  EndPoint: 'dtm:36790'
+  EndPoint: 'localhost:36790'
 
 # 以下配置的单位为'秒'
 # TransCronInterval: 3

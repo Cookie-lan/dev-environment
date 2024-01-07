@@ -1,1 +1,1 @@
-FROM deltaprojects/etcdkeeper
+FROM evildecay/etcdkeeper

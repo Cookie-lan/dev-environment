@@ -171,3 +171,6 @@ services:
       backend:
 #        ipv4_address: ${DTM_IP}        # 指定容器静态IP
     restart: always
+    depends_on:
+      - etcd
+      - mysql
